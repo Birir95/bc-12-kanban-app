@@ -1,3 +1,4 @@
+import sq
 class ToDo(object):
 	"""KanBan is a console application that is used to manage to-do 
 	tasks using the KanBan way of organizing todo into 
