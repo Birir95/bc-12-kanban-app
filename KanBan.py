@@ -1,36 +1,36 @@
-import sq
 class ToDo(object):
-	"""KanBan is a console application that is used to manage to-do 
-	tasks using the KanBan way of organizing todo into 
-	3 sections: todo, doing, done.""" 
-	def __init__(self):
-		import sqlite3 as sq
-    self._todo_data = {'to_do': {}, 'doing': {}, 'done': {}}
-    self.__db_name = 'KanBan.db'
+    def __init__(self):
+        import sqlite3 as sq
+        self._todo_data = {'to_do': {}, 'doing': {}, 'done': {}}
+        self.__db_name = 'todo.db'
 
-    self._db = sq.connect(self.__db_name)
-    self._cursor = self._db.cursor()
+        self._db = sq.connect(self.__db_name)
+        self._cursor = self._db.cursor()
 
-    try:
-        self._db.execute('''create table TODO
+        try:
+            self._db.execute('''create table todo
                              (task_id INTEGER PRIMARY KEY,
                              task_name TEXT NOT NULL,
-                             task_desc TEXT NOT NULL)''')
+                             task_desc TEXT NOT NULL,
+                             task_status TEXT ,
+                             task_start DATETIME,
+                             task_stop DATETIME)''')
 
-        self._db.execute('''create table DOING
-                            (task_id INTEGER,
-                             task_name TEXT NOT NULL,
-                             task_desc TEXT NOT NULL)''')
+            
+        except sq.OperationalError:
+            pass
 
-        self._db.execute('''create table DONE
-                            (task_id INTEGER,
-                             task_name TEXT NOT NULL,
-                             task_desc TEXT NOT NULL)''')
-    except sq.OperationalError:
-        pass
+            """This app organizes to_do tasks into three sections
+        (1) to do
+        (2)doing
+        (3)done
 
-
-	pass
+        """
+    def to_do(self, name, desc):
+       
+        self._db.execute('INSERT INTO todo(task_name, task_desc) VALUES (?,?)',(name,
+                                                             desc))
+        self._db.commit()
 
 	def to_do(self,task_name,task_desc):
 		pass
