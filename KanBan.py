@@ -1,14 +1,20 @@
+import sqlite3 as sq
+import datetime as dt
+import time as timer
+
 class ToDo(object):
+
     def __init__(self):
-        import sqlite3 as sq
-        self._todo_data = {'to_do': {}, 'doing': {}, 'done': {}}
+        
+        self.dt = dt
+        self.time = timer
         self.__db_name = 'todo.db'
 
         self._db = sq.connect(self.__db_name)
         self._cursor = self._db.cursor()
 
         try:
-            self._db.execute('''create table todo
+            self._db.execute('''create table if not exist todo
                              (task_id INTEGER PRIMARY KEY,
                              task_name TEXT NOT NULL,
                              task_desc TEXT NOT NULL,
@@ -28,30 +34,19 @@ class ToDo(object):
         """
     def to_do(self, name, desc):
        
-        self._db.execute('INSERT INTO todo(task_name, task_desc) VALUES (?,?)',(name,
-                                                             desc))
+        self._db.execute('INSERT INTO todo(task_name, task_desc, task_status) VALUES (?,?,?)',(name,
+                                                             desc, 'todo'))
         self._db.commit()
 
-	def to_do(self,task_name,task_desc):
-		pass
-
-	def doing(self, taskid,task_start):
-		pass
-
-	def done(self,task_id,task_stop):
-		pass
-
-	def list_todo(self):
-		pass
-
-	def list_doing(self):
-		pass
-
-	def list_done(self):
-		pass
-
-	def list_all(self):
-		pass
-
-	def main():
-		pass
+    def doing(self, task_id, task_start):
+        """The function stores all tasks currently on progress.
+        :param task_id:
+        :param task_start:
+        :return:
+        """
+        if task_start:
+            start_time = dt.datetime.fromtimestamp(timer.time()).strftime('%Y-%m-%d %H:%M:%S')
+            upd='UPDATE todo SET task_status = "doing",task_start ="{}" WHERE task_id = {}'.format(start_time,task_id)
+            print(upd)
+            self._db.execute(upd)
+            self._db.commit()
