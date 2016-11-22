@@ -73,7 +73,7 @@ class ToDo(object):
         data=self._cursor.fetchall()
         print data
         self._db.commit()
-        
+
     def list_doing(self):
         """The function Lists all tasks that are in the doing section .
         :param self:
@@ -83,3 +83,18 @@ class ToDo(object):
         info=self._cursor.fetchall()
         print info 
         self._db.commit()
+
+    def list_done(self):
+        """The function Lists all tasks that are in the done section .
+        :param self:
+        :return:
+        """
+        self._cursor.execute("SELECT * FROM todo WHERE task_status='done'")
+        intel=self._cursor.fetchall()
+        print intel 
+        self._db.commit()
+
+db = ToDo()
+#db.list_done()
+db.to_do('Andela Presentation','Friday position 15')
+
