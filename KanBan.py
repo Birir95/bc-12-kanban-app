@@ -50,3 +50,16 @@ class ToDo(object):
             print(upd)
             self._db.execute(upd)
             self._db.commit()
+            
+    def done(self,task_id,task_stop):
+        """The function stores all tasks whose progress is complete.
+        :param task_id:
+        :param task_start:
+        :return:
+        """
+        if task_stop:
+            stop_time = dt.datetime.fromtimestamp(timer.time()).strftime('%Y-%m-%d %H:%M:%S')
+            upd='UPDATE todo SET task_status = "done",task_stop ="{}" WHERE task_id = {}'.format(stop_time,task_id)
+            print(upd)
+            self._db.execute(upd)
+            self._db.commit()
