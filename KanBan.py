@@ -50,7 +50,7 @@ class ToDo(object):
             print(upd)
             self._db.execute(upd)
             self._db.commit()
-            
+
     def done(self,task_id,task_stop):
         """The function stores all tasks whose progress is complete.
         :param task_id:
@@ -63,3 +63,13 @@ class ToDo(object):
             print(upd)
             self._db.execute(upd)
             self._db.commit()
+
+    def list_to_do(self):
+        """The function Lists all tasks that are in the todo section .
+        :param self:
+        :return:
+        """
+        self._cursor.execute("SELECT * FROM todo WHERE task_status='todo'")
+        data=self._cursor.fetchall()
+        print data
+        self._db.commit()
