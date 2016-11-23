@@ -117,4 +117,6 @@ class ToDo(object):
                 print'     {:<10} {:<25} {:<15}'.format(row[0], row[1], row[2])
             return ''
 
-            
+db = ToDo()
+db.to_do( 'Appointment 3', 'Call samy at 5 pm') 
+db.done(2,True)        
