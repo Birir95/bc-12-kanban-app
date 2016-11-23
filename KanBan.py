@@ -94,7 +94,27 @@ class ToDo(object):
         print intel 
         self._db.commit()
 
-db = ToDo()
-#db.list_done()
-db.to_do('Andela Presentation','Friday position 15')
+    def list_all(self):
+            print'     {:<36}'.format('TO DO TASKS')
+            print'     {:<10} {:<25} {:<15}'.format('task_id', 'task_name', 'task_desc')
+            self._cursor.execute("SELECT * FROM todo WHERE task_status='todo'")
+            all_rows = self._cursor.fetchall()
+            for row in all_rows:
+                print'     {:<10} {:<25} {:<15}'.format(row[0], row[1], row[2])
 
+            print'     {:<36}'.format('DOING TASKS')
+            print'     {:<10} {:<25} {:<15}'.format('task_id', 'task_name', 'task_desc')
+            self._cursor.execute("SELECT * FROM todo WHERE task_status='doing'")
+            all_rows = self._cursor.fetchall()
+            for row in all_rows:
+                print'     {:<10} {:<25} {:<15}'.format(row[0], row[1], row[2])
+
+            print'     {:<36}'.format('TASKS DONE')
+            print'     {:<10} {:<25} {:<15}'.format('task_id', 'task_name', 'task_desc')
+            self._cursor.execute("SELECT * FROM todo WHERE task_status='done'")
+            all_rows = self._cursor.fetchall()
+            for row in all_rows:
+                print'     {:<10} {:<25} {:<15}'.format(row[0], row[1], row[2])
+            return ''
+
+            
