@@ -1,6 +1,8 @@
 import sqlite3 as sq
 import datetime as dt
 import time as timer
+from tabulate import tabulate
+from termcolor import cprint
 
 class ToDo(object):
 
@@ -14,13 +16,14 @@ class ToDo(object):
         self._cursor = self._db.cursor()
 
         try:
-            self._db.execute('''create table if not exist todo
+            self._db.execute('''create table todo 
                              (task_id INTEGER PRIMARY KEY,
                              task_name TEXT NOT NULL,
                              task_desc TEXT NOT NULL,
                              task_status TEXT ,
                              task_start DATETIME,
-                             task_stop DATETIME)''')
+                             time_stop DATETIME,
+                             task_taken DATETIME)''')
 
             
         except sq.OperationalError:
@@ -37,6 +40,8 @@ class ToDo(object):
         self._db.execute('INSERT INTO todo(task_name, task_desc, task_status) VALUES (?,?,?)',(name,
                                                              desc, 'todo'))
         self._db.commit()
+        cprint("Added New Todo", 'green', 'on_grey')
+        cprint("Name: {}\nDescription: {}".format(name, desc), 'cyan', 'on_grey')
 
     def doing(self, task_id, task_start):
         """The function stores all tasks currently on progress.
@@ -50,6 +55,8 @@ class ToDo(object):
             print(upd)
             self._db.execute(upd)
             self._db.commit()
+            print("Added New Doing")
+
 
     def done(self,task_id,task_stop):
         """The function stores all tasks whose progress is complete.
@@ -59,19 +66,36 @@ class ToDo(object):
         """
         if task_stop:
             stop_time = dt.datetime.fromtimestamp(timer.time()).strftime('%Y-%m-%d %H:%M:%S')
-            upd='UPDATE todo SET task_status = "done",task_stop ="{}" WHERE task_id = {}'.format(stop_time,task_id)
-            print(upd)
-            self._db.execute(upd)
+            upgrade='UPDATE todo SET task_status = "done",time_stop ="{}" WHERE task_id = {}'.format(stop_time,task_id)
+            print(upgrade)
+            self._db.execute(upgrade)
             self._db.commit()
 
+    def time_taken(self,time_taken):
+    	status= self._cursor.execute("SELECT* FROM todo WHERE task_status = 'done'")
+    	done_all=self._cursor.fetchall()
+    	for row in done_all:
+			stop = (row[5])
+			start = (row[4])
+			stop_obj = dt.datetime.strptime(stop, '%Y-%m-%d %H:%M:%S')
+			start_obj = dt.datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
+			duration = stop_obj - start_obj
+			print duration
+			timelapse = 'UPDATE todo SET task_taken ="{}" WHERE task_id = {}'.format(str(duration), row[0] )
+			print timelapse
+			self._db.execute(timelapse)
+			self._db.commit()
+    	
+
+
     def list_to_do(self):
-        """The function Lists all tasks that are in the todo section .
+        """The function Lists all tasks that are in the doing section .
         :param self:
         :return:
         """
         self._cursor.execute("SELECT * FROM todo WHERE task_status='todo'")
-        data=self._cursor.fetchall()
-        print data
+        all_todo=self._cursor.fetchall()
+        print all_todo
         self._db.commit()
 
     def list_doing(self):
@@ -80,43 +104,38 @@ class ToDo(object):
         :return:
         """
         self._cursor.execute("SELECT * FROM todo WHERE task_status='doing'")
-        info=self._cursor.fetchall()
-        print info 
+        all_doing=self._cursor.fetchall()
+        print all_doing
         self._db.commit()
 
     def list_done(self):
-        """The function Lists all tasks that are in the done section .
+        """The function Lists all tasks that are in the doing section .
         :param self:
         :return:
         """
         self._cursor.execute("SELECT * FROM todo WHERE task_status='done'")
-        intel=self._cursor.fetchall()
-        print intel 
+        all_done=self._cursor.fetchall()
+        print all_done 
         self._db.commit()
 
     def list_all(self):
-            print'     {:<36}'.format('TO DO TASKS')
-            print'     {:<10} {:<25} {:<15}'.format('task_id', 'task_name', 'task_desc')
-            self._cursor.execute("SELECT * FROM todo WHERE task_status='todo'")
+            self._cursor.execute("SELECT * FROM todo ")
             all_rows = self._cursor.fetchall()
+            headers = ["Id", "Name", "Description", "Status"]
+            table = []
             for row in all_rows:
-                print'     {:<10} {:<25} {:<15}'.format(row[0], row[1], row[2])
+                rec = [row[0], row[1], row[2], row[3]]
+                table.append(rec)
 
-            print'     {:<36}'.format('DOING TASKS')
-            print'     {:<10} {:<25} {:<15}'.format('task_id', 'task_name', 'task_desc')
-            self._cursor.execute("SELECT * FROM todo WHERE task_status='doing'")
-            all_rows = self._cursor.fetchall()
-            for row in all_rows:
-                print'     {:<10} {:<25} {:<15}'.format(row[0], row[1], row[2])
+            print(tabulate(table, headers, tablefmt="fancy_grid"))
+                
 
-            print'     {:<36}'.format('TASKS DONE')
-            print'     {:<10} {:<25} {:<15}'.format('task_id', 'task_name', 'task_desc')
-            self._cursor.execute("SELECT * FROM todo WHERE task_status='done'")
-            all_rows = self._cursor.fetchall()
-            for row in all_rows:
-                print'     {:<10} {:<25} {:<15}'.format(row[0], row[1], row[2])
-            return ''
 
 db = ToDo()
-db.to_do( 'Appointment 3', 'Call samy at 5 pm') 
-db.done(2,True)        
+#db.to_do( 'Appointment 3', 'Call samy at 5 pm') 
+#db.doing(2,True)
+db.time_taken("jdhjw")        
+
+
+
+
