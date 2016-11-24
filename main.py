@@ -20,10 +20,15 @@ Options:
 
 import sys
 import cmd
+import click
 from docopt import docopt, DocoptExit
 from KanBan import ToDo
+import sqlite3 as sq
+import intro
 
 
+intro.app_intro()
+intro.intro_header()
 cd = ToDo()
 
 
@@ -62,15 +67,17 @@ def docopt_cmd(func):
 class MyInteractive (cmd.Cmd):
     intro = 'Welcome to KanBan program!' \
         + ' (type help for a list of commands.)'
-    prompt = '(my_KanBan) '
+    prompt = click.style("KanBan App>>", fg='blue', bg='white', bold=True)
     file = None
 
     @docopt_cmd
     def do_todo(self, arg):
         """Usage: todo <task_name> """
-        task_desc=raw_input("Enter description :")
-
-        cd.to_do(arg['<task_name>'],task_desc)
+        try:
+            task_desc = raw_input("Enter description :")
+            cd.to_do(arg['<task_name>'], task_desc)
+        except(sq.IntegrityError):
+            return -1
 
     @docopt_cmd
     def do_doing(self, arg):
@@ -85,7 +92,10 @@ class MyInteractive (cmd.Cmd):
     def do_done(self, arg):
         """Usage: done <task_id> <task_stop>"""
 
+
         cd.done(arg['<task_id>'], arg['<task_stop>'])
+
+    
 
     @docopt_cmd
     def do_list_to_do(self, arg):
@@ -121,4 +131,4 @@ class MyInteractive (cmd.Cmd):
 
 MyInteractive().cmdloop()
 
-#print(opt)
+# print(opt)
