@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
-This example uses docopt with the built in cmd module to demonstrate an
-interactive command application.
+This is an application to showcase the KanBan way of organizing in
+to do, doing and done.
 Usage:
     my_KanBan todo <task_name> <task_desc>
     my_KanBan doing <task_id> <task_start>
@@ -18,12 +18,11 @@ Options:
     -h, --help  Show this screen and exit.
 """
 
-import sys
+
 import cmd
 import click
 from docopt import docopt, DocoptExit
 from KanBan import ToDo
-import sqlite3 as sq
 import intro
 
 
@@ -92,11 +91,13 @@ class MyInteractive (cmd.Cmd):
     def do_done(self, arg):
         """Usage: done <task_id> <task_stop>"""
 
+        try:
+            task_id = int(arg['<task_id>'])
+            cd.done(arg['<task_id>'], arg['<task_stop>'])
+        except(ValueError):
+            print "Please enter an integer"
 
-        cd.done(arg['<task_id>'], arg['<task_stop>'])
-
-    
-
+   
     @docopt_cmd
     def do_list_to_do(self, arg):
         """Usage: list_to_do """
@@ -127,8 +128,8 @@ class MyInteractive (cmd.Cmd):
         print('Good Bye!')
         exit()
 
-#opt = docopt(__doc__, sys.argv[1:])
+
 
 MyInteractive().cmdloop()
 
-# print(opt)
+
