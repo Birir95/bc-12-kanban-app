@@ -21,13 +21,13 @@ def intro_msg():
     click.secho(
         """
     =================WELL HELLO THERE!===============
-        """, bold=True, fg='blue')
+        """, bold=True, fg='yellow')
 
 def intro_header():
     click.clear()
     app_intro()
 
-    with click.progressbar(range(50000), fill_char=click.style('#', fg='white', bg='red')) as prog_bar:
+    with click.progressbar(range(50000), fill_char=click.style('#', fg='blue', bg='white')) as prog_bar:
         for i in prog_bar:
             pass
 
