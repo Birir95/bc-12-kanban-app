@@ -99,7 +99,7 @@ class ToDo(object):
         for row in all_todo:
             rows = [row[0], row[1], row[2], row[3]]
             tablet.append(rows)
-            print(tabulate(tablet, headers, tablefmt="fancy_grid"))
+        print(tabulate(tablet, headers, tablefmt="fancy_grid"))
         
         self.db.commit()
 
@@ -115,7 +115,7 @@ class ToDo(object):
         for row in all_doing:
             columns = [row[0], row[1], row[2], row[3]]
             tablee.append(columns)
-            print(tabulate(tablee, headers, tablefmt="fancy_grid"))
+        print(tabulate(tablee, headers, tablefmt="fancy_grid"))
 
         
         self.db.commit()
@@ -132,7 +132,7 @@ class ToDo(object):
         for row in all_done:
             rec = [row[0], row[1], row[2], row[3]]
             tab.append(rec)
-            print(tabulate(tab, headers, tablefmt="fancy_grid"))
+        print(tabulate(tab, headers, tablefmt="fancy_grid"))
   
         self.db.commit()
 
