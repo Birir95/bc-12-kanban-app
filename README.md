@@ -55,39 +55,23 @@ Task has been completed'''
 
 ### 'list_to_do' command
 To list_to_do type 'list_to_do' and press enter
-'''
-╒══════╤════════╤═══════════════════════════╤══════════╕
-│   Id │ Name   │ Description               │ Status   │
-╞══════╪════════╪═══════════════════════════╪══════════╡
-│    2 │ Church │ Go to church on sunday    │ todo     │
-├──────┼────────┼───────────────────────────┼──────────┤
-│    3 │ Mayo   │ Get the jar of Mayonaisee │ todo     │
-├──────┼────────┼───────────────────────────┼──────────┤
-│    4 │ Vote   │ Vote for President        │ todo     │
-╘══════╧════════╧═══════════════════════════╧══════════╛'''
+
 
 ### 'list_doing' command
 To list_doing tasks type 'list_doing' and press enter
-'''
-╒══════╤════════╤═══════════════════════════╤══════════╕
-│   Id │ Name   │ Description               │ Status   │
-╞══════╪════════╪═══════════════════════════╪══════════╡
-│    1 │ help   │ quit                      │ doing    │
-├──────┼────────┼───────────────────────────┼──────────┤
-│    3 │ Mayo   │ Get the jar of Mayonaisee │ doing    │
-╘══════╧════════╧═══════════════════════════╧══════════╛'''
+
 
 ### 'list_done' command
 To list_done tasks type 'list_done' and press enter
-'''
-KanBan App>>list_done
-╒══════╤════════╤═══════════════════════════╤══════════╕
-│   Id │ Name   │ Description               │ Status   │
-╞══════╪════════╪═══════════════════════════╪══════════╡
-│    3 │ Mayo   │ Get the jar of Mayonaisee │ done     │
-╘══════╧════════╧═══════════════════════════╧══════════╛'''
+
+KanBan App>>list_all
+To list_all tasks type 'list_all' and press enter
+
 
 ### To list_all tasks type 'list_all' and press enter
+Here is a small snippet of how it looks when you list all the tasks
+
+![kanban_snip](https://cloud.githubusercontent.com/assets/19901599/20615463/618e83ce-b2eb-11e6-8c7f-02e3349f125d.png)
 
 
 
