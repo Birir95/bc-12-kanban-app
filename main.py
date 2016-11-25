@@ -97,7 +97,14 @@ class MyInteractive (cmd.Cmd):
         except(ValueError):
             print "Please enter an integer"
 
-   
+    @docopt_cmd
+    def do_time_taken(self,arg):
+        """Usage: time_taken <time_taken>"""
+        
+        cd.time_taken(arg['<time_taken>'])
+
+
+
     @docopt_cmd
     def do_list_to_do(self, arg):
         """Usage: list_to_do """
