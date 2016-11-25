@@ -82,6 +82,7 @@ class ToDo(object):
 			duration = stop_obj - start_obj
 			timelapse = 'UPDATE todo SET time_taken ="{}" WHERE task_id = {}'.format(str(duration), row[0] )
 
+
 			self.db.execute(timelapse)
 			self.db.commit()
     	
@@ -141,24 +142,29 @@ class ToDo(object):
             headers = ["Id", "Name", "Description", "Status", "Time"]
             table = []
             for row in all_rows:
-                id = row[0]
+                task_id = row[0]
                 task_name = row[1]
                 task_desc = row[2]
                 task_status = row[3]
-                time_taken = row[6]
-
-                if task_status == 'do':
-                    time_taken = "Not Started"
-                elif task_status == 'doing':
+            
+                time_taken = "Not started"
+         
+                if task_status == 'doing':
                     time_taken = "Started"
                 elif task_status == 'done':
-                    time_taken = row[6]
-                    rec = [id, task_name, task_desc, task_status, time_taken]
-                    table.append(rec)
+                    stop = (row[5])
+                    start = (row[4])
+                    stop_obj = dt.datetime.strptime(stop, '%Y-%m-%d %H:%M:%S')
+                    start_obj = dt.datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
+                    time_taken = stop_obj - start_obj
+                    
+
+                rec = [task_id, task_name, task_desc, task_status, time_taken]
+                table.append(rec)
 
             print(tabulate(table, headers, tablefmt="fancy_grid"))
 
 
-          
+db =ToDo()       
 
 
